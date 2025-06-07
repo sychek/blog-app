@@ -2,7 +2,7 @@
 
 import { trpc } from "@/lib/trpc";
 import { useEffect, useState } from "react";
-import { Gender } from "@/generated/prisma";
+import { Gender } from "@prisma/client";
 
 const ProfilePage = () => {
   const { data: user } = trpc.profile.getProfile.useQuery();
@@ -46,9 +46,10 @@ const ProfilePage = () => {
     try {
       const message = JSON.parse(error.message);
       if (Array.isArray(message)) {
-        return message.map((err: any) => err.message).join(", ");
+        return message.map((err: { message: string }) => err.message).join(", ");
       }
-    } catch (_e) {
+    } catch (e) {
+      console.error(e);
       return error.message;
     }
   };
