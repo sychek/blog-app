@@ -1,9 +1,8 @@
 import { t } from "@/server/trpc-base";
 import { prisma } from "@/lib/prisma";
-import { hash } from "bcryptjs";
 import { z } from "zod";
-import { randomBytes } from "crypto";
 import { addHours } from "date-fns";
+import { generateResetToken, hashPassword, isTokenExpired } from "@/utils/auth";
 
 export const userRouter = t.router({
   register: t.procedure
@@ -17,7 +16,7 @@ export const userRouter = t.router({
     .mutation(async ({ input }) => {
       const { username, email, password } = input;
 
-      if (!email || !password || !username) {
+      if (!password?.trim() || !username?.trim()) {
         throw new Error("Missing required fields");
       }
 
@@ -26,7 +25,7 @@ export const userRouter = t.router({
         throw new Error("User already exists");
       }
 
-      const hashedPassword = await hash(password, 10);
+      const hashedPassword = await hashPassword(password);
 
       const user = await prisma.user.create({
         data: {
@@ -57,7 +56,7 @@ export const userRouter = t.router({
         throw new Error("No account with that email address exists.");
       }
 
-      const token = randomBytes(32).toString("hex");
+      const token = generateResetToken();
       const expires = addHours(new Date(), 1);
 
       await prisma.passwordResetToken.create({
@@ -84,11 +83,11 @@ export const userRouter = t.router({
         where: { token: input.token },
       });
 
-      if (!resetRecord || resetRecord.expiresAt < new Date()) {
+      if (!resetRecord || isTokenExpired(resetRecord.expiresAt)) {
         throw new Error("Invalid or expired token.");
       }
 
-      const hashedPassword = await hash(input.newPassword, 10);
+      const hashedPassword = await hashPassword(input.newPassword);
 
       await prisma.user.update({
         where: { id: resetRecord.userId },
