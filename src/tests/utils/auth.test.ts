@@ -8,7 +8,7 @@ describe("auth utils", () => {
       const hashed = await hashPassword(password);
 
       expect(typeof hashed).toBe("string");
-      expect(hashed).toMatch(/^\$2[abxy]\$.{56}$/);
+      expect(hashed).toMatch(/^\$2[123]\$.{56}$/);
 
       const match = await compare(password, hashed);
       expect(match).toBe(true);
