@@ -18,9 +18,10 @@ const ForgotPasswordPage = () => {
     onError: (err) => {
       setLoading(false);
       try {
-        setError(JSON.parse(err.message).map((e: any) => e.message).join(', '));
+        setError(JSON.parse(err.message).map((e: { message: string }) => e.message).join(', '));
       } catch (e) {
         setError(err.message || 'Something went wrong');
+        console.error(e);
       }
     },
   });
