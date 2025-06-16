@@ -2,7 +2,7 @@
 
 import { trpc } from "@/lib/trpc";
 import { useEffect, useState } from "react";
-import { Gender } from "@prisma/client";
+import { Gender } from "@/generated/prisma/client";
 
 const ProfilePage = () => {
   const { data: user } = trpc.profile.getProfile.useQuery();

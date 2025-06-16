@@ -9,5 +9,8 @@ export const prisma = {
     findUnique: jest.fn(),
     delete: jest.fn(),
   },
+  comment: {
+    create: jest.fn(),
+  },
 };
 

@@ -2,7 +2,7 @@ import { t } from "@/server/trpc-base";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import bcrypt from 'bcryptjs';
-import { Gender } from "@prisma/client";
+import { Gender } from "@/generated/prisma/client";
 
 export const profileRouter = t.router({
   getProfile: t.procedure.query(async ({ ctx }) => {

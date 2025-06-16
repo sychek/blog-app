@@ -1,5 +1,5 @@
+import { authOptions } from "@/utils/auth";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export const createContext = async (opts: { req: Request }) => {
   const session = await getServerSession(authOptions);

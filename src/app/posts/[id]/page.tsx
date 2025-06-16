@@ -3,8 +3,8 @@ import { notFound, redirect } from "next/navigation";
 import { format } from "date-fns";
 import { Comments } from "@/components/Comments";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Link from "next/link";
+import { authOptions } from "@/utils/auth";
 
 type Props = {
   params: Promise<{ id: string }>;

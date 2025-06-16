@@ -1,8 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import PostList from "@/components/Post";
+import { authOptions } from "@/utils/auth";
 
 type Props = {
   searchParams?: Promise<{
