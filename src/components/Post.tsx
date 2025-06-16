@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { format } from "date-fns";
-import { Post } from "@prisma/client";
+import { Post } from "@/generated/prisma/client";
 
 type PostListProps = {
   posts: Post[],

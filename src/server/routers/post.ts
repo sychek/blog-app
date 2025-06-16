@@ -17,7 +17,7 @@ export const postRouter = t.router({
           take: limit,
           orderBy: { createdAt: "desc" },
           include: {
-            author: { select: { name: true } },
+            author: { select: { firstName: true } },
           },
         }),
         prisma.post.count(),

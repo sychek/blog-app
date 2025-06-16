@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { trpc } from '@/lib/trpc';
+import { signIn, getSession } from 'next-auth/react';
 import Link from 'next/link';
 
 const RegisterPage = () => {
@@ -16,7 +17,30 @@ const RegisterPage = () => {
   const [error, setError] = useState('');
   const registerMutation = trpc.user.register.useMutation({
     onSuccess: () => {
-      router.push('/login');
+      setError('');
+      const login = async () => {
+        const result = await signIn('credentials', {
+          redirect: false,
+          username: form.username,
+          password: form.password,
+        });
+
+        if (result?.error) {
+          setError(result.error);
+          return;
+        }
+
+        const session = await getSession();
+
+        if (session?.user) {
+          router.push('/');
+        } else {
+          router.push('/login');
+        }
+      }
+
+      login();
+
     },
     onError: (error) => {
       setError(error.message || 'Registration failed');

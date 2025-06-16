@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { trpc } from '@/lib/trpc';
 import { useState } from 'react';
-import { Post } from '@/generated/prisma';
+import { Post } from "@/generated/prisma/client";
 
 export default function CreatePostPage() {
   const router = useRouter();
